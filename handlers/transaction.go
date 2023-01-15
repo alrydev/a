@@ -55,6 +55,8 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	fmt.Println("jancok")
+
 	transaction.Total = request.Total
 	transaction.UserID = userID
 	transaction.Status = "pending"
@@ -69,6 +71,9 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 	}
 
 	DataSnap, _ := h.TransactionRepository.GetTransactionAdmin(transaction.ID)
+
+
+	fmt.Println("jancok data snap", DataSnap)
 
 	var s = snap.Client{}
 	s.New(os.Getenv("SERVER_KEY"), midtrans.Sandbox)
@@ -144,6 +149,8 @@ func (h *handlerTransaction) Notification(w http.ResponseWriter, r *http.Request
 	fraudStatus := notificationPayload["fraud_status"].(string)
 	orderId := notificationPayload["order_id"].(string)
 
+	fmt.Println("rder id", orderId)
+	
 	transaction, _ := h.TransactionRepository.GetOneTrans(orderId)
 
 	if transactionStatus == "capture" {
