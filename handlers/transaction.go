@@ -148,10 +148,14 @@ func (h *handlerTransaction) Notification(w http.ResponseWriter, r *http.Request
 	transactionStatus := notificationPayload["transaction_status"].(string)
 	fraudStatus := notificationPayload["fraud_status"].(string)
 	orderId := notificationPayload["order_id"].(string)
+	
+	id, _ := strconv.Atoi(orderId)
 
 	fmt.Println("order id", orderId)
 
-	transaction, _ := h.TransactionRepository.GetOneTrans(orderId)
+	transaction, _ := h.TransactionRepository.GetOneTrans(id)
+
+
 
 	if transactionStatus == "capture" {
 		if fraudStatus == "challenge" {
