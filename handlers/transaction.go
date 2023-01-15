@@ -59,7 +59,7 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 
 	transaction.Total = request.Total
 	transaction.UserID = userID
-	transaction.Status = "pending"
+	// transaction.Status = "pending"
 	transaction.UpdateAt = time.Now()
 
 	_, err = h.TransactionRepository.UpdateTransaction(transaction)
@@ -149,8 +149,8 @@ func (h *handlerTransaction) Notification(w http.ResponseWriter, r *http.Request
 	fraudStatus := notificationPayload["fraud_status"].(string)
 	orderId := notificationPayload["order_id"].(string)
 
-	fmt.Println("rder id", orderId)
-	
+	fmt.Println("order id", orderId)
+
 	transaction, _ := h.TransactionRepository.GetOneTrans(orderId)
 
 	if transactionStatus == "capture" {
