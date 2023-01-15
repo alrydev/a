@@ -11,7 +11,7 @@ type TransactionRepository interface {
 	GetTransaction(userID int) (models.Transaction, error)
 	GetTransactionAdmin(ID int) (models.Transaction, error)
 	UpdateTrans(status string, ID int) error
-	GetOneTrans(ID int) (models.Transaction, error)
+	GetOneTrans(ID string) (models.Transaction, error)
 	GetOrderByID(userID int) ([]models.Transaction, error)
 	FindTransaction() ([]models.Transaction, error)
 }
@@ -46,19 +46,19 @@ func (r *repository) UpdateTrans(status string, ID int) error {
 	return err
 }
 
-// func (r *repository) GetOneTrans(ID string) (models.Transaction, error) {
-// 	var transaction models.Transaction
-// 	err := r.db.Preload("User").Preload("Cart").Preload("Cart.Book").First(&transaction, ID).Error
-
-// 	return transaction, err
-// }
-
-func (r *repository) GetOneTrans(ID int) (models.Transaction, error) {
+func (r *repository) GetOneTrans(ID string) (models.Transaction, error) {
 	var transaction models.Transaction
-	// err := r.db.Preload("User").Preload("Cart").Preload("Cart.Book").First(&transaction, ID).Error
-	err := r.db.Preload("User").Preload("Cart").Preload("Cart.Book").First(&transaction, "id = ?", ID).Error
+	err := r.db.Preload("User").Preload("Cart").Preload("Cart.Book").First(&transaction, ID).Error
+
 	return transaction, err
 }
+
+// func (r *repository) GetOneTrans(ID int) (models.Transaction, error) {
+// 	var transaction models.Transaction
+// 	// err := r.db.Preload("User").Preload("Cart").Preload("Cart.Book").First(&transaction, ID).Error
+// 	err := r.db.Preload("User").Preload("Cart").Preload("Cart.Book").First(&transaction, "id = ?", ID).Error
+// 	return transaction, err
+// }
 
 func (r *repository) FindTransaction() ([]models.Transaction, error) {
 	var transaction []models.Transaction
