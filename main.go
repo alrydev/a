@@ -25,7 +25,7 @@ func main() {
 
 	r := mux.NewRouter()
 
-	routes.RouteInit(r.PathPrefix("/waysbookssssss").Subrouter())
+	routes.RouteInit(r.PathPrefix("/waysbooks").Subrouter())
 
 	r.PathPrefix("/uploads").Handler(http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads"))))
 
