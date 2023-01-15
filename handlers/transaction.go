@@ -59,7 +59,7 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 
 	transaction.Total = request.Total
 	transaction.UserID = userID
-	transaction.Status = "pending"
+	transaction.Status = "success"
 	transaction.UpdateAt = time.Now()
 
 	_, err = h.TransactionRepository.UpdateTransaction(transaction)
@@ -148,41 +148,41 @@ func (h *handlerTransaction) Notification(w http.ResponseWriter, r *http.Request
 	transactionStatus := notificationPayload["transaction_status"].(string)
 	fraudStatus := notificationPayload["fraud_status"].(string)
 	orderId := notificationPayload["order_id"].(string)
-	id, _ := strconv.Atoi(orderId)
 
-	transs, _ := h.TransactionRepository.GetTransaction(id)
+	fmt.Println("order id", orderId)
+
+	transaction, _ := h.TransactionRepository.GetOneTrans(orderId)
 
 	if transactionStatus == "capture" {
 		if fraudStatus == "challenge" {
 			// TODO set transaction status on your database to 'challenge'
 			// e.g: 'Payment status challenged. Please take action on your Merchant Administration Portal
-			h.TransactionRepository.UpdateTrans("pending", transs.ID)
+			h.TransactionRepository.UpdateTrans("pending", transaction.ID)
 		} else if fraudStatus == "accept" {
 			// TODO set transaction status on your database to 'success'
-			SendMail("success", transs)
-			h.TransactionRepository.UpdateTrans("success", transs.ID)
+			SendMail("success", transaction)
+			h.TransactionRepository.UpdateTrans("success", transaction.ID)
 		}
 	} else if transactionStatus == "settlement" {
 		// TODO set transaction status on your databaase to 'success'
-		SendMail("success", transs)
-		h.TransactionRepository.UpdateTrans("success", transs.ID)
+		SendMail("success", transaction)
+		h.TransactionRepository.UpdateTrans("success", transaction.ID)
 	} else if transactionStatus == "deny" {
 		// TODO you can ignore 'deny', because most of the time it allows payment retries
-		// and later can become successSendMail("failed", transaction) 
-		SendMail("failed", transs)
-		h.TransactionRepository.UpdateTrans("failed", transs.ID)
+		// and later can become success
+		SendMail("failed", transaction)
+		h.TransactionRepository.UpdateTrans("failed", transaction.ID)
 	} else if transactionStatus == "cancel" || transactionStatus == "expire" {
 		// TODO set transaction status on your databaase to 'failure'
-		SendMail("failed", transs) 
-		h.TransactionRepository.UpdateTrans("failed", transs.ID)
+		SendMail("failed", transaction)
+		h.TransactionRepository.UpdateTrans("failed", transaction.ID)
 	} else if transactionStatus == "pending" {
 		// TODO set transaction status on your databaase to 'pending' / waiting payment
-		h.TransactionRepository.UpdateTrans("pending", transs.ID)
+		h.TransactionRepository.UpdateTrans("pending", transaction.ID)
 	}
 
 	w.WriteHeader(http.StatusOK)
 }
-
 
 func SendMail(status string, transaction models.Transaction) {
 
