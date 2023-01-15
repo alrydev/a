@@ -59,7 +59,7 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 
 	transaction.Total = request.Total
 	transaction.UserID = userID
-	transaction.Status = "pending"
+	transaction.Status = ""
 	transaction.UpdateAt = time.Now()
 
 	_, err = h.TransactionRepository.UpdateTransaction(transaction)
