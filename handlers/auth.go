@@ -66,6 +66,8 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		Fullname: request.Fullname,
 		Email:    request.Email,
 		Password: password,
+		Gender: request.gender,
+		Address: request.address,
 		Role:     "user",
 		CreateAt: time.Now(),
 		UpdateAt: time.Now(),
