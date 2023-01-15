@@ -55,11 +55,10 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	fmt.Println("jancok")
 
 	transaction.Total = request.Total
 	transaction.UserID = userID
-	transaction.Status = "pending"
+	transaction.Status = "success"
 	transaction.UpdateAt = time.Now()
 
 	_, err = h.TransactionRepository.UpdateTransaction(transaction)
@@ -73,7 +72,6 @@ func (h *handlerTransaction) UpdateTransaction(w http.ResponseWriter, r *http.Re
 	DataSnap, _ := h.TransactionRepository.GetTransactionAdmin(transaction.ID)
 
 
-	fmt.Println("jancok data snap", DataSnap)
 
 	var s = snap.Client{}
 	s.New(os.Getenv("SERVER_KEY"), midtrans.Sandbox)
