@@ -26,7 +26,8 @@ type handlerBook struct {
 func HandlerBook(BookRepository repositories.BookRepository) *handlerBook {
 	return &handlerBook{BookRepository}
 }
-var path_file = "https://test-production-6488.up.railway.app/"
+var path_file = "https://test-production-6488.up.railway.app/uploads/"
+
 func (h *handlerBook) CreateBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -40,7 +41,7 @@ func (h *handlerBook) CreateBook(w http.ResponseWriter, r *http.Request) {
 	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
 
 	dataPDF := r.Context().Value("dataPDF")
-	filePDF := path_file + dataPDF.(string)
+	filePDF := dataPDF.(string)
 
 	dataContex := r.Context().Value("dataFile")
 	filepath := dataContex.(string)
