@@ -40,7 +40,7 @@ func (h *handlerBook) CreateBook(w http.ResponseWriter, r *http.Request) {
 	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
 
 	dataPDF := r.Context().Value("dataPDF")
-	filePDF := dataPDF.(string)
+	filePDF := path_file + dataPDF.(string)
 
 	dataContex := r.Context().Value("dataFile")
 	filepath := dataContex.(string)
