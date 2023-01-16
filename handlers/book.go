@@ -26,7 +26,7 @@ type handlerBook struct {
 func HandlerBook(BookRepository repositories.BookRepository) *handlerBook {
 	return &handlerBook{BookRepository}
 }
-
+var path_file = "https://test-production-6488.up.railway.app/"
 func (h *handlerBook) CreateBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -92,7 +92,7 @@ func (h *handlerBook) CreateBook(w http.ResponseWriter, r *http.Request) {
 		Author:          request.Author,
 		Price:           request.Price,
 		Description:     request.Description,
-		FilePDF:         filePDF,
+		FilePDF:         path_file + filePDF,
 		Status:          "regular",
 		Image:           resp.SecureURL,
 		CreateAt:        time.Now(),
